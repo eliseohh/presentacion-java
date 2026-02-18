@@ -116,6 +116,28 @@ demo: ## Run a full demo sequence against the running app
 		-d '{"nombre":"Producto Test","precio":99.99,"stock":10,"categoriaId":1}' | jq .
 
 # ============================================================
+# Audit fields (createdAt / updatedAt via H2 console)
+# ============================================================
+
+H2_URL := jdbc:h2:mem:demodb
+H2_USER := sa
+
+audit-cat: ## Show categorias with audit timestamps
+	@echo "=== Categorias — audit fields ==="
+	@curl -s "http://localhost:8080/h2-console" > /dev/null
+	@curl -s $(BASE_URL)/categorias | jq '.[] | {id, nombre, createdAt, updatedAt}'
+
+audit-prod: ## Show productos with audit timestamps
+	@echo "=== Productos — audit fields ==="
+	@curl -s $(BASE_URL)/productos | jq '.[] | {id, nombre, precio, createdAt, updatedAt}'
+
+audit-all: ## Show audit timestamps for all tables
+	@echo "=== Categorias — audit fields ==="
+	@curl -s $(BASE_URL)/categorias | jq '.[] | {id, nombre, createdAt, updatedAt}'
+	@echo "\n=== Productos — audit fields ==="
+	@curl -s $(BASE_URL)/productos | jq '.[] | {id, nombre, precio, createdAt, updatedAt}'
+
+# ============================================================
 # Help
 # ============================================================
 
@@ -127,6 +149,7 @@ help: ## Show this help
 	cat-list cat-get cat-products cat-create cat-update cat-delete \
 	prod-list prod-get prod-search prod-filter prod-price prod-by-cat \
 	prod-by-cat-page prod-low-stock prod-latest prod-create prod-update \
-	prod-delete prod-update-prices
+	prod-delete prod-update-prices \
+	audit-cat audit-prod audit-all
 
 .DEFAULT_GOAL := help
