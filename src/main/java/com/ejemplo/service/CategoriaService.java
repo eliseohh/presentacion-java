@@ -36,7 +36,8 @@ public class CategoriaService {
         List<ProductoDTO> productos = cat.getProductos().stream()
                 .map(p -> new ProductoDTO(
                         p.getId(), p.getNombre(), p.getPrecio(),
-                        p.getStock(), p.getActivo(), cat.getNombre()
+                        p.getStock(), p.getActivo(), cat.getNombre(),
+                        p.getCreatedAt(), p.getUpdatedAt()
                 ))
                 .toList();
 
@@ -71,7 +72,9 @@ public class CategoriaService {
                 c.getId(),
                 c.getNombre(),
                 c.getDescripcion(),
-                c.getProductos() != null ? c.getProductos().size() : 0
+                c.getProductos() != null ? c.getProductos().size() : 0,
+                c.getCreatedAt(),
+                c.getUpdatedAt()
         );
     }
 }

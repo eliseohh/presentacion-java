@@ -123,7 +123,8 @@ public class ProductoService {
         String categoriaNombre = p.getCategoria() != null ? p.getCategoria().getNombre() : null;
         return new ProductoDTO(
                 p.getId(), p.getNombre(), p.getPrecio(),
-                p.getStock(), p.getActivo(), categoriaNombre
+                p.getStock(), p.getActivo(), categoriaNombre,
+                p.getCreatedAt(), p.getUpdatedAt()
         );
     }
 }

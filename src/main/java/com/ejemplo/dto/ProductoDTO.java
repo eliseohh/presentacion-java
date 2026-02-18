@@ -1,6 +1,7 @@
 package com.ejemplo.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 // Java 21: Records como DTOs inmutables
 public record ProductoDTO(
@@ -9,7 +10,9 @@ public record ProductoDTO(
         BigDecimal precio,
         Integer stock,
         Boolean activo,
-        String categoriaNombre
+        String categoriaNombre,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
     // Record para creacion/actualizacion
     public record CrearProducto(
