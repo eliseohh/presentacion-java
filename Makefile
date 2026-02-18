@@ -16,6 +16,16 @@ clean: ## Clean build artifacts
 build: ## Build the project
 	mvn clean package -DskipTests
 
+update: ## Update a producto and show audit timestamps → make update ID=1 NOMBRE="Mouse Pro" PRECIO=39.99 STOCK=40 CAT_ID=1
+	@echo "=== BEFORE update ==="
+	@curl -s $(BASE_URL)/productos/$(ID) | jq '{id, nombre, precio, createdAt, updatedAt}'
+	@echo "\n=== Updating producto $(ID)… ==="
+	@curl -s -X PUT $(BASE_URL)/productos/$(ID) \
+		-H 'Content-Type: application/json' \
+		-d '{"nombre":"$(NOMBRE)","precio":$(PRECIO),"stock":$(STOCK),"categoriaId":$(CAT_ID)}' | jq '{id, nombre, precio, createdAt, updatedAt}'
+	@echo "\n=== AFTER update ==="
+	@curl -s $(BASE_URL)/productos/$(ID) | jq '{id, nombre, precio, createdAt, updatedAt}'
+
 # ============================================================
 # Categorias
 # ============================================================
@@ -145,7 +155,7 @@ help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: run test clean build help demo \
+.PHONY: run test clean build update help demo \
 	cat-list cat-get cat-products cat-create cat-update cat-delete \
 	prod-list prod-get prod-search prod-filter prod-price prod-by-cat \
 	prod-by-cat-page prod-low-stock prod-latest prod-create prod-update \
